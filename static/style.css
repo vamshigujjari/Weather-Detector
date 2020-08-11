@@ -17,10 +17,13 @@ body {
     max-height: 500px;
 }
 
-.file-upload-form,
-.image-preview {
+.file-upload-form {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 20px;
+}
+
+.image-preview {
+    display: none;
 }
 
 img.preview {

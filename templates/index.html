@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 
-<head>
-    <link rel="stylesheet" href="../static/style.css">
+<!-- <head> -->
+    <link  rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
     <!-- JS, Popper.js, and jQuery -->
@@ -14,21 +14,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
-    <script src=" {{ url_for('static', filename='scripts.js') }}"></script>
-    <script>
-        var loadFile = function (event) {
-            if (document.getElementById("output-label") !== null )
-                document.getElementById("output-label").style.display = "none";
-            document.getElementById("image-preview-holder").style.display = "block";
-
-            var output = document.getElementById('output');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function () {
-                URL.revokeObjectURL(output.src)
-            }
-        };
-    </script>
-</head>
+    <script type="text/javascript" src=" {{ url_for('static', filename='scripts.js') }}"></script>
+<!-- </head> -->
 
 <body>
 
