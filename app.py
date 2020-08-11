@@ -34,18 +34,18 @@ def predict():
 
 
 def get_prediction(input_tensor):
-    outputs = cnn_model.forward(input_tensor)                 # Get likelihoods for all ImageNet classes
-    _, y_hat = outputs.max(1)                             # Extract the most likely class
-    prediction = y_hat.item()                             # Extract the int value from the PyTorch tensor
+    outputs = cnn_model.forward(input_tensor)                 
+    _, y_hat = outputs.max(1)                             
+    prediction = y_hat.item()                             
     return prediction
 
 
 def transform_image(infile):
     input_transforms = [transforms.Resize((224,224)), transforms.ToTensor()]
     my_transforms = transforms.Compose(input_transforms)
-    image = Image.open(infile)                            # Open the image file
-    timg = my_transforms(image)                           # Transform PIL image to appropriately-shaped PyTorch tensor
-    timg.unsqueeze_(0)                                    # PyTorch models expect batched input; create a batch of 1
+    image = Image.open(infile)                            
+    timg = my_transforms(image)                           
+    timg.unsqueeze_(0)                                    
     return timg
 
 if __name__ == '__main__':
