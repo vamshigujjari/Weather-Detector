@@ -20,7 +20,7 @@ def home():
     return render_template('index.html', data = None)
 
 
-@app.route('/predict', methods =['GET','POST'])
+@app.route('/predict', methods =['POST'])
 def predict():
     if request.method == 'POST':
         f = request.files['file']

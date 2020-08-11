@@ -8,6 +8,7 @@ RUN pip3 install -r requirements.txt
 
 COPY weather_model_4.pth /app/weather_model_4.pth
 COPY app.py /app/
+COPY CNN_Model.py /app/
 COPY templates /app/templates
 COPY static /app/static
 
