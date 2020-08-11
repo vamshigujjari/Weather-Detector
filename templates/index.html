@@ -1,40 +1,92 @@
 <!doctype html>
 <html>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-<script src=" {{ url_for('static', filename='scripts.js') }}"></script>
-<!-- JS, Popper.js, and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+<head>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <script src=" {{ url_for('static', filename='scripts.js') }}"></script>
+    <script>
+        var loadFile = function (event) {
+            if (document.getElementById("output-label") !== null )
+                document.getElementById("output-label").style.display = "none";
+            document.getElementById("image-preview-holder").style.display = "block";
+
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src)
+            }
+        };
+    </script>
+</head>
 
 <body>
-    <div class="justify-content-center align-items-center container ">
+
+    <div class="justify-content-center align-items-center container mt-5">
         <div class='jumbotron justify-content-between text-center'>
-            <h1 class="display-4">Weather detection</h1>
-            <form class="d-flex justify-content-center" action="/predict" method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="img-input">Upload image to predict the weather</label>
-                    <input type="file" name='file' class="form-control-file" id="img-input" onchange="DisplayImage(this);" accept="image/*">
-                    <button id="predict-weather" class="btn btn-success" type="submit" onclick="javascript: return false;" data-toggle="modal" data-target="#successModal">Submit</button>
-                </div>
-            </form>
+            <h1 class="display-4">Weather Detection</h1>
+            <h5 class="text-muted">Multi-class weather classification using weather dataset</h5>
         </div>
     </div>
 
+    <div class="container-fluid bg-light py-5 mt-5">
+        <div class="row">
+            <div class="col-md-5 mx-auto">
+                <div class="card card-body">
+                    <h3 class="text-center mb-4 font-weight-normal">Try Out!</h3>
+                    <form id="submitForm" class="d-flex justify-content-center" action="/predict" method="POST"
+                        enctype="multipart/form-data">
+                        <fieldset>
+                            <div class="input-group">
+                                <div class="input-group-prepend mb-3">
+                                    <span class="input-group-text" id="img-input-upload">Upload</span>
+                                </div>
 
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="img-input">Choose file</label>
+                                    <input id="img-input" type="file" name="file" class="custom-file-input"
+                                        aria-describedby="img-input-upload" accept="image/*" onchange="loadFile(event)"
+                                        required>
+                                </div>
+                            </div>
 
-    <div class="modal" id='successModal' tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-body">
-                    Weather for the given image is {{data}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div id="image-preview-holder" class="row" style="display:none">
+                                <div class="col text-center">
+                                    <img id="output" class="img-thumbnail rounded mx-auto d-block" alt="Image Preview" />
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col text-center">
+                                    <input id="predict-weather" class="btn btn-primary" value="Submit" type="submit">
+                                </div>
+                            </div>
+
+                            {% if show_prediction_output %}
+                            <div id="output-label" class="row mt-3">
+                                <div class="col text-center">
+                                    <label> Weather for the given image is {{data}} </label>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+
 </body>
 
 </html>

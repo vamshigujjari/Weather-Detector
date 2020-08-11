@@ -19,7 +19,6 @@ classes = ['Cloudy', 'Rain', 'Shine', 'Sunrise']
 def home():
     return render_template('index.html', data = None)
 
-
 @app.route('/predict', methods =['POST'])
 def predict():
     if request.method == 'POST':
@@ -28,10 +27,8 @@ def predict():
             input_tensor = transform_image(f)
             prediction_idx = get_prediction(input_tensor)
             class_name = classes[prediction_idx]
-            print("vamshi!!!", class_name)
-            return render_template("index.html", data=class_name)
-
-
+            print("Class name: ", class_name)
+            return render_template("index.html", data=class_name, show_prediction_output=True)
 
 def get_prediction(input_tensor):
     outputs = cnn_model.forward(input_tensor)                 
